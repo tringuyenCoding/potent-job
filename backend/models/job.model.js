@@ -19,6 +19,10 @@ const jobSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    experienceLevel:{
+      type: Number,
+      required: true,
+    },
     location: {
       type: String,
       required: true,
@@ -41,6 +45,12 @@ const jobSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    applications: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Application",
+      }
+    ]
   },
   { timestamps: true }
 );
