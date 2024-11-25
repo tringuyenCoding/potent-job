@@ -9,6 +9,9 @@ import { USER_API_END_POINT } from "@/utils/constant";
 import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "@/redux/authSlice";
+import { Loader2 } from "lucide-react";
 
 const Signin = () => {
   const [input, setInput] = useState({
@@ -17,7 +20,9 @@ const Signin = () => {
     role: "",
   });
 
+  const { loading } = useSelector((store) => store.auth);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -26,20 +31,23 @@ const Signin = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${USER_API_END_POINT}/login`,input,{
+      dispatch(setLoading(true));
+      const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
         headers: {
           "Content-Type": "application/json",
         },
         withCredentials: true,
-      })
+      });
 
-      if(res.data.success) {
+      if (res.data.success) {
         navigate("/");
         toast.success(res.data.message);
       }
-
     } catch (error) {
-      console.log(error);  
+      console.log(error);
+      toast.error(error.response.data.message);
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -105,10 +113,19 @@ const Signin = () => {
               </div>
             </RadioGroup>
           </div>
+          {loading ? (
+            <Button className="w-full my-4">
+              <Loader2 className="mr-2 h-4 w-4 animate-spin">
+                {" "}
+                Please wait
+              </Loader2>
+            </Button>
+          ) : (
+            <Button type="submit" className="w-full my-4">
+              Sign In
+            </Button>
+          )}
 
-          <Button type="submit" className="w-full my-4">
-            Sign In
-          </Button>
           <span className="text-sm">
             Don`t have an account?{" "}
             <Link to="/signup" className="text-blue-600 font-bold">
