@@ -10,7 +10,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "@/redux/authSlice";
+import { setAuthUser, setLoading } from "@/redux/authSlice";
 import { Loader2 } from "lucide-react";
 
 const Signin = () => {
@@ -40,6 +40,7 @@ const Signin = () => {
       });
 
       if (res.data.success) {
+        dispatch(setAuthUser(res.data.user));
         navigate("/");
         toast.success(res.data.message);
       }
