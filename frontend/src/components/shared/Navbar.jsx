@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { LogOut, User2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import store from "@/redux/store";
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.auth);
@@ -74,7 +73,9 @@ const Navbar = () => {
                   <div className="flex flex-col gap-3 text-gray-600">
                     <div className="flex w-fit items-center gap-2 cursor-pointer">
                       <User2 />
-                      <Button variant="link">View Profile</Button>
+                      <Button variant="link">
+                        <Link to="/profile"> View Profile</Link>
+                      </Button>
                     </div>
 
                     <div className="flex w-fit items-center gap-2 cursor-pointer">
