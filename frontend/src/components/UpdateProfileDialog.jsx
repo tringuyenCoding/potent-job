@@ -6,13 +6,14 @@ import {
   DialogHeader,
 } from "./ui/dialog";
 import { Button } from "./ui/button";
-import { Input, Label } from "./ui/form";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import axios from "axios";
-import { USER_API_END_POINT } from "../utils/api";
+import { USER_API_END_POINT } from "@/utils/constant";
 import { setAuthUser } from "@/redux/authSlice";
 import { toast } from "sonner";
 
