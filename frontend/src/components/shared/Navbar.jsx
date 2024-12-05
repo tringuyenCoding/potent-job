@@ -109,7 +109,7 @@ const Navbar = () => {
                   </div>
 
                   <div className="flex flex-col gap-3 text-gray-600">
-                    {user && user.role === "recruiter" && (
+                    {user && user.role === "student" && (
                       <div className="flex w-fit items-center gap-2 cursor-pointer">
                         <User2 />
                         <Button variant="link">
