@@ -1,10 +1,14 @@
 import Navbar from "../shared/Navbar";
-import { Input } from "../ui/Input";
-import { Button } from "../ui/Button";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 import CompaniesTable from "./CompaniesTable";
 import { useNavigate } from "react-router-dom";
+import useGetAllCompanies from "@/hooks/useGetAllCompanies";
+import { useState } from "react";
 
 const Companies = () => {
+  useGetAllCompanies();
+  const [input, setInput] = useState("");
   const navigate = useNavigate();
 
   return (
@@ -12,8 +16,12 @@ const Companies = () => {
       <Navbar />
       <div className="max-w-6xl mx-auto my-10">
         <div className="flex items-center justify-between my-5">
-          <Input className="w-fit" placeholder="Filter by name" />
-          <Button onclick={() => navigate("/admin/companies/create")}>
+          <Input
+            className="w-fit"
+            placeholder="Filter by name"
+            onChange={(e) => setInput(e.target.value)}
+          />
+          <Button onClick={() => navigate("/admin/company/create")}>
             New company
           </Button>
         </div>
