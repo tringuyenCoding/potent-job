@@ -10,13 +10,28 @@ import {
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Edit2, MoreHorizontal } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import store from "@/redux/store";
+import { useEffect, useState } from "react";
 
 const CompaniesTable = () => {
-  const companies = useSelector((store) => store.company);
-  const navigate = useNavigate();
+  const { companies, searchCompanyByText } = useSelector(
+    (store) => store.company
+  );
+  const [filterCompany, setFilterCompany] = useState(companies);
+
+  useEffect(() => {
+    const filterCompany =
+      companies.length >= 0 &&
+      companies.filter((company) => {
+        if (!searchCompanyByText) return true;
+        return company?.name
+          ?.toLowerCase()
+          .includes(searchCompanyByText.toLowerCase());
+      });
+
+    setFilterCompany(filterCompany);
+  }, [companies, searchCompanyByText]);
+
   return (
     <div>
       <Table>
@@ -30,7 +45,7 @@ const CompaniesTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {companies?.map((company) => {
+          {filterCompany?.map((company) => {
             <tr>
               <div key={company._id}>
                 <TableCell>
