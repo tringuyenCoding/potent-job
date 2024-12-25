@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Navbar from "../shared/Navbar";
 import ApplicantsTable from "./ApplicantsTable";
 import axios from "axios";
@@ -10,7 +10,7 @@ import { setAllApplications } from "@/redux/applicationSlice";
 const JobApplicants = () => {
   const params = useParams();
   const dispatch = useDispatch();
-  const { applicants } = useSelector((state) => state.application);
+  const { applicants } = useSelector((store) => store.application);
 
   useEffect(() => {
     const fetchAllApplicants = async () => {
@@ -20,9 +20,7 @@ const JobApplicants = () => {
           { withCredentials: true }
         );
 
-        if (res.data.success) {
-          dispatch(setAllApplications(res.data.job));
-        }
+        dispatch(setAllApplications(res.data.job));
       } catch (error) {
         console.log(error);
       }
