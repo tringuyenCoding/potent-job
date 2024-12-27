@@ -4,13 +4,13 @@ import { Input } from "../ui/input";
 import { RadioGroup } from "../ui/radio-group";
 import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { USER_API_END_POINT } from "@/utils/constant";
 import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "@/redux/authSlice"
+import { setLoading } from "@/redux/authSlice";
 import { Loader2 } from "lucide-react";
 
 const Signup = () => {
@@ -23,7 +23,7 @@ const Signup = () => {
     file: "",
   });
 
-  const { loading } = useSelector((store) => store.auth);
+  const { loading, user } = useSelector((store) => store.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -43,30 +43,35 @@ const Signup = () => {
     formData.append("role", input.role);
     formData.append("fullname", input.fullname);
     formData.append("phoneNumber", input.phoneNumber);
-    if(input.file) {
+    if (input.file) {
       formData.append("file", input.file);
     }
     try {
       dispatch(setLoading(true));
-      const res = await axios.post(`${USER_API_END_POINT}/register`,formData,{
+      const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
         withCredentials: true,
-      })
+      });
 
-      if(res.data.success) {
+      if (res.data.success) {
         navigate("/signin");
         toast.success(res.data.message);
       }
-
     } catch (error) {
-      console.log(error);  
+      console.log(error);
       toast.error(error.response.data.message);
-    } finally{
+    } finally {
       dispatch(setLoading(false));
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div>
